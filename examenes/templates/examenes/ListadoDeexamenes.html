@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block titulo %}
+	Resultado de examenes
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="/static/css/base1.css">
+<link rel="stylesheet" href="/static/css/style1.css">
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+<!-- scrip de tabla -->
+    <script type="text/javascript" class="init">
+    $(document).ready(function() {
+    $('#example').DataTable();
+    } );
+    </script>
+
+ <!--   <script src="./tabsjquery_files/jquery-1.12.0.min.js"></script>
+
+<!-- fin de declaracion de archivos de tabla -->
+  <!-- stylo de formulario busqueda  y scrip-->
+<link href='/static/css/progression.min.css' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="/static/js/progression.min.js"></script>
+
+
+
+    <script>
+jQuery(document).ready(function($) {
+
+    $("#formulario").progression({
+      tooltipWidth: '200',
+      tooltipPosition: 'right',
+      tooltipOffset: '50',
+      showProgressBar: true,
+      showHelper: true,
+      tooltipFontSize: '14',
+      tooltipFontColor: 'fff',
+      progressBarBackground: 'fff',
+      progressBarColor: '6EA5E1',
+      tooltipBackgroundColor:'a2cbfa',
+      tooltipPadding: '10',
+      tooltipAnimate: true
+    });
+
+});
+
+</script>
+<!-- fin estilo de formulario de busqueda  y scrip-->
+
+<!-- script de botones -->
+<!-- <link href="./libs_jq_iu/jquery-ui.css" rel="stylesheet"> -->
+<!-- <link href="./libs_jq_iu/jquery-ui.jsh" rel="stylesheet"> -->
+<script  type="text/javascript" lenguage="javascript">
+
+function setup(idpre,accion){
+  document.fvalida2.hdnValor.value =idpre
+  document.fvalida2.hdnAccion.value =accion
+  if (document.fvalida.hdnAccion.value =="actualizar" ) {
+    document.fvalida.submit();
+  }
+  else{
+    return 0;
+  }
+}
+
+function setup_pregunta(idpre,accion){
+  if (confirm('¿Desea eliminar la cita') == true)
+  {
+    document.fvalida2.hdnValor.value =idpre
+    document.fvalida2.hdnAccion.value =accion
+  }
+  return 0;
+}
+</script>
+
+
+
+<script>
+
+$(function() {
+$( "button:first" )
+.button({
+  icons: {
+    primary: "ui-icon-locked"
+  },
+  text: false
+})
+.next().button({
+  icons: {
+    primary: "ui-icon-pencil"
+  },
+  text: false
+});
+</script>
+<script>
+var validar=function(){
+       if (document.fvalida.uniMe.value =="1" ) {
+         window.alert("correcto lo tines");
+         return 0;
+        }
+        document.fvalida.submit();
+      }
+    </script>
+{% endblock %}
+
+{% block credenciales %}
+<ul class="links l_tinynav1">
+    <li class="project jquery" style="vertical-align:middle; height: 35px; padding: 8px 12px; cursor: default;">Bienvenido {{usuario}}
+</li>
+    {%if logeado %}
+      <li class="project jquery"><a href="/logout/">Cerrar sesión</a>
+    {% else %}
+      <li class="project jquery"><a href="/signup/">Iniciar sesión</a>
+    {% endif %}
+</li>
+</ul>
+{% endblock %}
+{% block menus %}
+        <li class="menu-item"><a href="/examenes/">Examenes disponibles</a></li>
+        <li class="menu-item"><a href="/citas/">Citas</a></li>
+        {%if logeado %}
+        <li class="menu-item current"><a href="/ResultadoExamenes/">Actualizar Examenes</a></li>
+       
+        {% endif %}
+{% endblock %}
+{% block contenido %}
+
+<div id="contable">
+<h1>Resultado de examenes</h1>
+	<form  id="myform2" name="fvalida2"  method="POST" action="{% url 'update' %}">{% csrf_token %}
+        <input type="hidden" id="hdnAccion" name="hdnAccion" value="0" />
+        <input type="hidden" id="hdnValor" name="hdnValor" value="0" />
+     <table id="example" class="display" cellspacing="0" width="95%" >
+        <thead>
+            <tr>
+                <!-- <th class="" style="width: 94px;">crud</th> -->
+               <th>Nombre paciente</th>
+                <th>Examen seleccionado</th>
+                <th>Dia Realizado</th>
+                <th>Resultado de Examen</th>
+                <th></th>
+                <!-- <th class="" style="width: 94px;">crud</th> -->
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nombre paciente</th>
+                <th>Examen seleccionado</th>
+                <th>Dia Realizado</th>
+                <th>Resultado de Examen</th>
+                <th></th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+					 {% for r in ResExamen %}
+            <tr>
+                <td>{{r.id_cita.paciente}}</td>
+                <td>{{r.id_cita.id_examen.nombre_examen}}</td>
+                <td>{{r.id_cita.fecha}}</td>
+                <td>{{r.ResultadosExamen}}</td>
+                <td>
+		<input type="submit"  name="Actualizar" value="Actualizar"
+				onclick="setup({{r.id_resExamen}},'actualizar')" />
+		<input type="submit" name="delete" value="Eliminar"
+				onclick="setup_pregunta({{r.id_resExamen}},'eliminar')" placeholder="">
+		</td>
+            </tr>
+           {% endfor %}
+        </tbody>				
+    </table>
+</form>
+    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ {%endblock %}

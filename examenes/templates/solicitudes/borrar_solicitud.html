@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block tit%}Borrar Solicitud{% endblock %}
+{% block cuerpo %}
+
+<div class="card">
+	<div class="card-header">		
+		<h2>Eliminar Solicitud {{solicitud.id_solicitud}}</h2>
+	</div>
+	<div class="card-body">
+		<form method="post" autocomplete="off">
+            {% csrf_token %}
+            <h3 align="center">Esta a punto de eliminar la solicitud {{object.id_solicitud}} creada el {{solicitud.fecha_solicitud}} para presentarse el {{horario.fecha_presentacion}} a la hora indicadada {{horario.hora_presentacion|date:"h:i a"}}</h3>
+            <h3 align="center">¿Realmente Quieres eliminar la solicitud de {{object.paciente.first_name}} {{object.paciente.last_name}}?</h3>            
+            <br>
+            <div align="center">            
+            <button type="submit" class="btn btn-flat btn-danger mx-5">Eliminar</button>
+            <a class="btn btn-primary mx-5" href="{% url 'listar_solicitudes' %}" class="btn btn-flat btn-default">No, regresar atrás</a>
+            </div>
+        </form>	
+	</div>
+</div>
+
+{% endblock %}

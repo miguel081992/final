@@ -1,0 +1,5 @@
+.borde-guia{
+	border: 2px;
+	border-style: dotted;
+	border-color: black;
+}

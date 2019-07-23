@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block tit%}Detalle de la Solicitud{% endblock %}
+{% block cuerpo %}
+<div class="card mb-2">
+	<h1>Solicitud {{solicitud.id_solicitud}}</h1>		
+</div>
+
+<div class="card">
+	<div class="card-header">		
+	<b>Nombre de Paciente: </b>{{solicitud.paciente.first_name}} {{solicitud.paciente.last_name}}
+	</div>
+	<div class="card-body">
+		<table class="table table-bordered">		  
+		  <tbody>
+		  	<tr>
+		  		<td class="col-md-4"><b>Fecha para presentarse para realizar la toma de muestras: </b></td>
+		  		<td>{{horario.fecha_presentacion}}</td>
+		  	</tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Hora para presentarse para realizar la toma de muestras: </b></td>		    	
+		    	<td>{{horario.hora_presentacion|date:"P" }}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Nombre del médico pidio realizar exámenes: </b></td>
+		    	<td>{{solicitud.nombre_medico}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Institucion donde trabaja el médico: </b></td>
+		    	<td>{{solicitud.institucion_solicitante}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Diagnostico presuntivo indicado por el médico por el cual se hará exámenes: </b></td>
+		    	<td>{{solicitud.diagnostico_presuntivo}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Fecha en que registro la solicitud: </b></td>
+		    	<td>{{solicitud.fecha_solicitud}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Urgencia: </b></td>
+		    	<td>{{solicitud.urgencia}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Estado de la solicitud: </b></td>
+		    	<td>
+		    		{% if solicitud.estado_solicitud == '1' %}
+			      		<span class="badge badge-primary">{{solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.estado_solicitud == '2' %}
+			      		<span class="badge badge-warning">{{solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.estado_solicitud == '3' %}
+			      		<span class="badge badge-danger">{{solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.estado_solicitud == '4' %}
+			      		<span class="badge badge-success">{{solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.estado_solicitud == '5' %}
+			      		<span class="badge badge-info">{{solicitud.get_estado_solicitud_display }}</span>
+			      	{% endif %}
+			    </td>
+		    </tr>
+		    <tr>
+		    	<td class="" colspan="2"><b>Exámenes a realizar: </b></td>		    	
+		    </tr>
+		    	<td colspan="2">
+		    		
+		    	{% for examen in examenes %}		    		
+		    		<div class="btn btn-info p-2 border"><h5>{{examen.nombre_examen}} ({{examen.categoria.nombre_categoria}})</h5></div>
+		    	{% endfor %}
+		    	</td>
+		    <tr>
+		    	<td class="col-md-4"><b>Notas: </td>
+		    	<td>{{context.solicitud.notas_solicitud}}</td>
+		    </tr>		    
+		    <tr>
+		    	<td class="col-md-4"><b>Fecha en que se actualizó la fecha y hora de presentacion: </b></td>
+		    	<td>{{horario.fecha_actualizacion}}</td>
+		    </tr>
+		    <tr>
+		    	<td class="col-md-4"><b>Fecha en que se actualizó la solicitud: </b></td>
+		    	<td>{{solicitud.fecha_actualizacion}}</td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}

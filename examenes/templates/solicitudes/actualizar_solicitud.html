@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block tit%}Actualizar Solicitud{% endblock %}
+{% block cuerpo %}
+<h1>Actualizar Solicitud</h1>
+
+<div class="card">
+	<div class="card-body">		
+	<b>Nombre de Paciente: </b>{{object.paciente.first_name}} {{object.paciente.last_name}}	
+	</div>
+</div>
+
+<div class="card my-2">
+	<div class="card-body">
+		<form method="post" accept-charset="utf-8">
+			{% csrf_token %}
+			{% if request.user.groups.all.first.name == 'paciente' %}				
+				{{ form.horario.as_p }}
+				{{ form.solicitud.as_p }}
+			{% elif request.user.groups.all.first.name == 'encargado' or request.user.is_superuser%}
+				{{ form.as_p }}
+			{% else %}				
+			{% endif %}
+			<button class="btn btn-primary" type="submit">Actualizar</button>			
+			<a class="btn btn-danger" href="{% url 'listar_solicitudes' %}" role="button">Cancelar Actualizacion</a>
+		</form>
+	</div>
+</div>
+{% endblock %}

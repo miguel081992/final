@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block cuerpo %}
+
+<form  method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if cat %}
+  <h1>̣Borrar la categoría {{ cat.nombre_categoria }} ?</h1>
+  {% endif %}
+  <p>Está seguro de esta acción</p>
+  <p>Se eliminará la categoria </p>
+  <p>Si elimina esta categoria se eliminaran también los examenes de esta categoría.</p>
+
+  <button type="submit" class="btn btn-danger">Confirmar</button>
+  <a type="button" class="btn btn-secondary" href={% url 'categorias' %}>Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block tit %}Creacion Examen{% endblock %}
+{% block cuerpo %}
+  <div class="row justify-content-center">
+    <div class="col col-5">
+      <form class="form" action="{% url 'crearEx'%}" method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-12">
+            <p>
+            <label>Nombre del Examen</label></p>
+            {{ form.nombre }}
+          </div>
+          <div class="col-12">
+            <p>
+            <label>Seleccione la categoria</label></p>
+            {{ form.categoria }}
+          </div>
+          <div>
+              <p>
+                <label>Descripcion del examen</label>
+              </p>
+              {{ form.descripcion }}
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <input type="submit" class="btn btn-primary" name="" value="guardar">
+          <a type="button" class="btn btn-secondary" href="javascript:window.history.back();">Volver atrás</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

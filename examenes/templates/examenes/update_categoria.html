@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block tit %}Creacion categorias {% endblock %}
+{% block cuerpo %}
+  <div class="row justify-content-center">
+    <div class="col col-5">
+      <form class="form" action="{% url 'editarCat' 1 %}" method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-12">
+            <p>
+            <label>Nombre de la categoria</label></p>
+            {{ form.nombre }}
+          </div>
+          <div class="col-12">
+            <p>
+            <label>id</label>
+            {{ form.id }}
+            </p>
+           </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <input type="submit" class="btn btn-primary" name="" value="guardar">
+          <a class="btn btn-secondary" href="{% url 'categorias' %}">Cancelar</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

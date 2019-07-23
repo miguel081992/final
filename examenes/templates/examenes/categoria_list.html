@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block tit %}Examenes disponibles{% endblock   %}
+
+{% block cuerpo %}
+
+
+<div class="row">
+  <div class="col col-12">
+    {% if user.is_superuser %}
+    <a href="{% url 'crearCat' %}" class="btn btn-success">Crear categoría</a>
+    {% endif %}
+  </div>
+</div>
+      {% if list %}
+          <table class="table">
+            <head>
+              <th>id</th>
+              <th>nombre</th>
+              {% if user.is_superuser %}
+              <th>Acciones</th>
+              {% endif %}
+            </head>
+            <tbody>
+              {% for Categoria in list %}
+                <tr>
+                  <td>{{ Categoria.id_categoria }}</td>
+                  <td><a href="{% url 'examenes' Categoria.id_categoria %}">{{ Categoria.nombre_categoria }}</a></td>
+                      {% if user.is_superuser %}
+                  <td> <a href="{% url 'editarCat' Categoria.id_categoria %}" class="btn btn-success"  >Editar</a>
+                      <a href="{% url 'deleteCat' Categoria.id_categoria %}" class="btn btn-danger">Eliminar</a></td>
+                      {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {% else %}
+            <div class="row justify-content-center" >
+              <h1>No hay categorías disponibles</h1>
+            </div>
+      {% endif %}
+
+{% endblock %}

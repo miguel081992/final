@@ -1,0 +1,134 @@
+
+{% extends 'base.html' %}
+{% block tit%}Gestion de Examenes{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="/static/css/base1.css">
+<link rel="stylesheet" href="/static/css/style1.css">
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+<!-- scrip de tabla -->
+    <script type="text/javascript" class="init">
+    $(document).ready(function() {
+    $('#example').DataTable();
+    } );
+    </script>
+
+ <!--   <script src="./tabsjquery_files/jquery-1.12.0.min.js"></script>
+
+<!-- fin de declaracion de archivos de tabla -->
+  <!-- stylo de formulario busqueda  y scrip-->
+<link href='/static/css/progression.min.css' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="/static/js/progression.min.js"></script>
+
+
+
+    <script>
+jQuery(document).ready(function($) {
+
+    $("#formulario").progression({
+      tooltipWidth: '200',
+      tooltipPosition: 'right',
+      tooltipOffset: '50',
+      showProgressBar: true,
+      showHelper: true,
+      tooltipFontSize: '14',
+      tooltipFontColor: 'fff',
+      progressBarBackground: 'fff',
+      progressBarColor: '6EA5E1',
+      tooltipBackgroundColor:'a2cbfa',
+      tooltipPadding: '10',
+      tooltipAnimate: true
+    });
+
+});
+
+</script> 
+<!-- fin estilo de formulario de busqueda  y scrip-->
+
+<!-- script de botones -->
+<!-- <link href="./libs_jq_iu/jquery-ui.css" rel="stylesheet"> -->
+<!-- <link href="./libs_jq_iu/jquery-ui.jsh" rel="stylesheet"> -->
+<script  type="text/javascript" lenguage="javascript">
+function setinsert(accion){
+// document.fvalida.hdnValor.value =idprecio
+document.fvalida.hdnAccion.value =accion
+if (document.fvalida.hdnAccion.value =="insertar" ) {
+         document.fvalida.submit();
+         
+        }
+else{
+  
+         return 0;
+
+}
+}
+function setup(idpre,accion){
+  document.fvalida2.hdnValor.value =idpre
+  document.fvalida2.hdnAccion.value =accion
+  if (document.fvalida.hdnAccion.value =="actualizar" ) {
+    document.fvalida.submit();
+  }
+  else{
+    return 0;
+  }
+}
+
+function setup_pregunta(idpre,accion){
+  if (confirm('¿Desea eliminar el registro ?') == true)
+  {
+    document.fvalida2.hdnValor.value =idpre
+    document.fvalida2.hdnAccion.value =accion
+  }
+  return 0;
+}
+</script>
+
+
+
+<script>
+
+$(function() {
+$( "button:first" )
+.button({
+  icons: {
+    primary: "ui-icon-locked"
+  },
+  text: false
+})
+.next().button({
+  icons: {
+    primary: "ui-icon-pencil"
+  },
+  text: false
+});
+</script>
+<script>
+var validar=function(){
+       if (document.fvalida.uniMe.value =="1" ) {
+         window.alert("correcto lo tines");
+         return 0;
+        }
+        document.fvalida.submit();
+      }
+    </script>
+{% endblock %}
+
+
+{% block cuerpo %}
+
+<div class="card my-2">
+  <div class="card-body">
+    <form method="post" accept-charset="utf-8">
+      {% csrf_token %}
+      {{ form.Registro.as_p }}  
+      {{ form.horario.as_p }}
+      {{ form.solicitud.as_p }}
+      {{ form.ResExamen.as_p }}          
+      <button class="btn btn-primary" type="submit">Registrar</button>      
+      <a class="btn btn-danger" href="{% url 'listar_solicitudes' %}" role="button">Cancelar Registro</a>
+    </form>
+  </div>
+</div>
+
+ {%endblock %}

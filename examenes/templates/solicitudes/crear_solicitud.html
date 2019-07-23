@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block tit%}Registrar Solicitud{% endblock %}
+{% block cuerpo %}
+<h1>Registro de Solicitud</h1>
+
+<div class="card">
+	<div class="card-body">		
+	<b>Nombre de Paciente: </b>{{request.user.first_name}} {{request.user.last_name}}
+	</div>
+</div>
+
+<div class="card my-2">
+	<div class="card-body">
+		<form method="post" accept-charset="utf-8">
+			{% csrf_token %}
+			{{ form.horario.as_p }}
+			{{ form.solicitud.as_p }}			
+			<button class="btn btn-primary" type="submit">Registrar</button>			
+			<a class="btn btn-danger" href="{% url 'listar_solicitudes' %}" role="button">Cancelar Registro</a>
+		</form>
+	</div>
+</div>
+{% endblock %}

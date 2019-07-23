@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block tit %}Examenes disponibles{% endblock   %}
+
+{% block cuerpo %}
+
+
+<div class="row">
+  <div class="col col-12">
+    {% if user.is_superuser %}
+    <a href="{% url 'crearEx' %}" class="btn btn-success">Crear Examen</a>
+    {% endif %}
+  </div>
+</div>
+      {% if list %}
+          <table class="table">
+            <head>
+              <th>id</th>
+              <th>nombre</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              {% if user.is_superuser %}
+              <th>Acciones</th>
+              {% endif %}
+            </head>
+            <tbody>
+              {% for Examen in list %}
+                <tr>
+                  <td>{{ Examen.id_examen }}</td>
+                  <td>{{ Examen.nombre_examen }}</td>
+                  <td>{{ Examen.categoria.nombre_categoria }}</td>
+                  <td>{{ Examen.descripcion_examen }}</td>
+                  {% if user.is_superuser %}
+                  <td> <a href="{% url 'updateEx' Examen.id_examen  %}" class="btn btn-success">Editar</a>
+                  <a href="{% url 'deleteExamen' Examen.id_examen %}" class="btn btn-danger">Eliminar</a></td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {% else %}
+            <div class="row justify-content-center" >
+              <h1>No hay Exámenes disponibles en esta categoría</h1>
+            </div>
+      {% endif %}
+      <a type="button" class="btn btn-secondary" href="{% url 'categorias' %}">Regresar a categorías</a>
+{% endblock %}

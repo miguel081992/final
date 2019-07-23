@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block cuerpo %}
+
+<form  method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if list %}
+  <h1>̣Borrar el examen {{ list.nombre_examen }} ?</h1>
+{% endif %}
+
+  <p>Está seguro de esta acción.
+    </p><p>Esta accion no puede deshacerse</p>
+  <button type="submit" class="btn btn-danger" >Confirmar</button>
+  <a type="button" class="btn btn-secondary" href="{% url 'examenes' list.categoria.id_categoria %}">Cancelar</a>
+</form>
+{% endblock %}

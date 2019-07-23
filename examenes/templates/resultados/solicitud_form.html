@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block tit %}Solicitud de cita{% endblock %}
+
+{% block cuerpo %}
+<form class="" method="post">
+  {% csrf_token %}
+{{ form.fecha_solicitud }}
+</form>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block tit%}Lista de Solicitudes{% endblock %}
+
+{% block estilos_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/datatables.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/tabla_solicitudes.css' %}"/>
+{% endblock %}
+
+{% block cuerpo %}
+<div class="card mt-2">
+	<div class="card-header">
+		<div class="p-0 float-left">
+			<h5 class="card-title m-0">Listas de Solicitudes Registradas</h5>
+		</div>	    
+		<div class="p-0 float-right">
+	    	<a class="btn btn-success m-0" href="{% url 'crear_solicitud' %}" role="button"><b>Nueva Solicitud +</b></a>		    			
+		</div>
+	</div>
+	<div class="card-body">
+		<table id="tbl-solicitudes" class="table table-bordered">
+		  <thead>		  	
+		    <tr>
+		    	<th scope="col">#</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Fecha Creación</th>
+				<th scope="col">Fecha Presentación</th>
+				<th scope="col">Estado</th>
+				<th scope="col">Opciones</th>
+		    </tr>
+		    <tr id="busq">
+		    	<td></td>	  		  	
+			  	{% if request.user.groups.all.first.name == 'encargado'  or request.user.is_superuser %}<td>Nombre</td>{% else %}<td>Nombre</td>{% endif %}
+			    <td>Fecha Creación</td>
+			    <td>Fecha Presentación</td>
+			    <td>Estado</td>
+			    <td></td>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% if solicitudes %}
+			  	{%for solicitud in solicitudes %}
+			    <tr>
+			      <th scope="row">{{solicitud.solicitud.id_solicitud}}</th>
+			      <td>{{solicitud.solicitud.paciente.first_name}} {{solicitud.solicitud.paciente.last_name}}</td>
+			      <td>{{solicitud.solicitud.fecha_solicitud|date:"SHORT_DATE_FORMAT"}}</td>
+			      <td>{{solicitud.fecha_presentacion|date:"SHORT_DATE_FORMAT"}}</td>
+			      <td>
+			      	<!--('1', 'Registrada'),('2', 'En Proceso'),('3', 'Cancelada'),('4', 'Completada'),('5', 'Parcialmente Completada'),-->
+			      	{% if solicitud.solicitud.estado_solicitud == '1' %}
+			      		<span class="badge badge-primary">{{solicitud.solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.solicitud.estado_solicitud == '2' %}
+			      		<span class="badge badge-warning">{{solicitud.solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.solicitud.estado_solicitud == '3' %}
+			      		<span class="badge badge-danger">{{solicitud.solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.solicitud.estado_solicitud == '4' %}
+			      		<span class="badge badge-success">{{solicitud.solicitud.get_estado_solicitud_display }}</span>
+			      	{% elif solicitud.solicitud.estado_solicitud == '5' %}
+			      		<span class="badge badge-info">{{solicitud.solicitud.get_estado_solicitud_display }}</span>
+			      	{% endif %}
+			  	  </td>
+			      <td>
+			      	<div align="center">
+				      	<a class="btn btn-primary m-0" href="{% url 'ver_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Ver Detalles</a>		      	
+				      	{% if request.user.groups.all.first.name == 'paciente'%}
+					  		<a class="btn btn-warning m-0" href="{% url 'actualizar_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Actualizar</a>
+					      	<a class="btn btn-danger m-0" href="{% url 'borrar_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Eliminar</a> 
+					  	{% elif request.user.groups.all.first.name == 'encargado' %}  		
+					      	<a class="btn btn-warning m-0" href="{% url 'actualizar_estado_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Actualizar Estado</a>
+					    {% elif request.user.is_superuser %}					    	 
+					    	<a class="btn btn-warning m-0" href="{% url 'actualizar_estado_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Actualizar Estado</a>
+					    	<a class="btn btn-danger m-0" href="{% url 'borrar_solicitud' solicitud.solicitud.id_solicitud %}" role="button">Eliminar</a>
+					    {% endif %}
+				  	</div>			      	
+			      </td>
+			    </tr>
+			    {% endfor %}
+		    {% else %}
+		    	<tr><td colspan="5">No ha realizado ninguna solicitud</td></tr>		    	
+		    {% endif %}    
+		  </tbody>
+		</table>		
+	</div>
+</div>
+
+{% endblock %}
+
+{% block scripts_js %}
+<script type="text/javascript" src="{% static 'vendor/DataTables/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tabla_solicitudes.js' %}"></script>
+{% endblock %}
